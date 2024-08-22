@@ -1,0 +1,17 @@
+[Unit]
+Description=Bun Server Skeleton
+After=network.target
+
+[Service]
+ExecStart=/root/.bun/bin/bun /root/bun-server-skeleton/dist/dist/index-cluster.js
+WorkingDirectory=/root/bun-server-skeleton
+Restart=always
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+
+# cp bun-server-skeleton.service /etc/systemd/system/bun-server-skeleton.service && systemctl daemon-reload && systemctl enable bun-server-skeleton.service && systemctl status bun-server-skeleton.service

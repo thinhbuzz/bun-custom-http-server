@@ -1,0 +1,19 @@
+{
+  "name": "bun-custom-http-server",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "^1.1.14",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "superstruct": "^2.0.2"
+  },
+  "scripts": {
+    "build": "bun build src/index.ts --packages=external --target bun --outfile dist/index.js",
+    "build:cluster": "bun build src/index-cluster.ts --packages=external --target bun --outfile dist/index-cluster.js",
+    "dev": "bun --watch src/index.ts",
+    "start": "bun dist/index.js",
+    "start:cluster": "bun dist/index-cluster.js"
+  }
+}
