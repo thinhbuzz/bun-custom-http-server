@@ -4,9 +4,11 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "^1.1.14",
+    "@types/pg": "^8.11.10",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "pg": "^8.13.1",
     "superstruct": "^2.0.2"
   },
   "scripts": {
