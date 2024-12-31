@@ -77,7 +77,12 @@ function getRemainingPath(path: string, matchLength: number): string {
   return `/${remainingPath}`;
 }
 
-function matchRoutes(routes: ParsedRoute[], path: string, method: string): [ParsedRoute, Map<string, string>] | [] {
+function matchRoutes(
+  routes: ParsedRoute[],
+  path: string,
+  method: string,
+  parentParams: Map<string, string> = new Map()
+): [ParsedRoute, Map<string, string>] | [] {
   for (const route of routes) {
     if (route.method !== HttpMethods.ANY && !route.children && (route.method || HttpMethods.GET) !== method) {
       continue;
@@ -85,17 +90,20 @@ function matchRoutes(routes: ParsedRoute[], path: string, method: string): [Pars
 
     const match = path.match(route.regex!);
     if (match) {
-      const params = extractParams(route.paramNames!, match);
+      // Combine parent params with current params
+      const currentParams = extractParams(route.paramNames!, match);
+      const combinedParams = new Map([...parentParams, ...currentParams]);
+
       if (route.children) {
         const remainingPath = getRemainingPath(path, match[0].length);
-        const childMatch = matchRoutes(route.children, remainingPath, method);
+        const childMatch = matchRoutes(route.children, remainingPath, method, combinedParams);
         if (childMatch.length > 0) {
           return childMatch;
         }
       }
 
       if (!route.children || (route.children && match[0] === path)) {
-        return [route, params];
+        return [route, combinedParams];
       }
     }
   }
