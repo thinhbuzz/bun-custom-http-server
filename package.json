@@ -13,9 +13,8 @@
   },
   "scripts": {
     "build": "bun build src/index.ts --packages=external --target bun --outfile dist/index.js",
-    "build:cluster": "bun build src/index-cluster.ts --packages=external --target bun --outfile dist/index-cluster.js",
     "dev": "bun --watch src/index.ts",
     "start": "bun dist/index.js",
-    "start:cluster": "bun dist/index-cluster.js"
+    "start:cluster": "bun src/index-cluster.ts"
   }
 }

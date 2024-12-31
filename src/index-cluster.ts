@@ -6,7 +6,7 @@ const buns = new Array(cpus);
 
 for (let i = 0; i < cpus; i++) {
   buns[i] = spawn({
-    cmd: ['bun', 'run', join(__dirname, 'index.ts')],
+    cmd: [process.execPath, 'run', join(__dirname, 'index.ts')],
     stdout: 'inherit',
     stderr: 'inherit',
     stdin: 'inherit',
