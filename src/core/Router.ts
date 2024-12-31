@@ -118,7 +118,7 @@ function compileRoutes(routes: ParsedRoute[], parent?: Route): void {
   }
 }
 
-interface ParsedRoute extends Route {
+export interface ParsedRoute extends Route {
   regex?: RegExp;
   paramNames?: string[];
   parent?: Route;
