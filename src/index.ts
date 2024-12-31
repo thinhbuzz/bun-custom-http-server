@@ -17,7 +17,7 @@ const server = Bun.serve({
     const url = new URL(request.url);
     const [route, params] = router.match(url.pathname, request.method);
     if (route?.handler) {
-      if (!await checkCanAccess(request, route)) {
+      if (!await checkCanAccess(request, route, params)) {
         throw new ForbiddenException();
       }
       if (route.schema) {
