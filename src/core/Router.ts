@@ -19,16 +19,20 @@ export class Router {
   }
 }
 
-export async function checkCanAccess(request: Request, route: ParsedRoute): Promise<boolean> {
+export async function checkCanAccess(
+  request: Request,
+  route: ParsedRoute,
+  params: Map<string, string> | undefined,
+): Promise<boolean> {
   if (route.accessValidators) {
     for (const accessValidator of route.accessValidators) {
-      if (!await accessValidator(request)) {
+      if (!await accessValidator(request, route, params)) {
         return false;
       }
     }
   }
   if (route.parent) {
-    if (!await checkCanAccess(request, route.parent)) {
+    if (!await checkCanAccess(request, route.parent, params)) {
       return false;
     }
   }
@@ -126,7 +130,11 @@ export interface Route {
   method?: HttpMethods;
   children?: Route[];
   schema?: Struct<any>;
-  accessValidators?: ((request: Request) => boolean | Promise<boolean>)[];
+  accessValidators?: ((
+    request: Request,
+    route: ParsedRoute,
+    params: Map<string, string> | undefined,
+  ) => boolean | Promise<boolean>)[];
 }
 
 export interface RouteContext<Body = any> {
