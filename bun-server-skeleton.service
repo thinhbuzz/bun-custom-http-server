@@ -3,7 +3,7 @@ Description=Bun Server Skeleton
 After=network.target
 
 [Service]
-ExecStart=/root/.bun/bin/bun /root/pgtools-external-webhook/src/index-cluster.ts
+ExecStart=/root/.bun/bin/bun /root/bun-server-skeleton/src/index-cluster.ts
 WorkingDirectory=/root/bun-server-skeleton
 Restart=always
 RestartSec=30
