@@ -1,6 +1,6 @@
 import { validate } from 'superstruct';
 import { isDebug } from './constants.ts';
-import { json } from './core/response-json.ts';
+import { json } from './core/response.ts';
 import { buildRouterContext, checkCanAccess, Router } from './core/Router.ts';
 import { BaseHttpException } from './exceptions/BaseHttpException.ts';
 import { DataInvalidException } from './exceptions/DataInvalidException.ts';
