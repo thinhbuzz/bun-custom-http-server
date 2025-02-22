@@ -1,37 +1,14 @@
-import { validate } from 'superstruct';
 import { isDebug } from './constants.ts';
 import { json } from './core/response.ts';
-import { buildRouterContext, checkCanAccess, Router } from './core/Router.ts';
+import { wrapRoutes } from './core/Router.ts';
 import { BaseHttpException } from './exceptions/BaseHttpException.ts';
-import { DataInvalidException } from './exceptions/DataInvalidException.ts';
-import { ForbiddenException } from './exceptions/ForbiddenException.ts';
-import { RouteNotFoundException } from './exceptions/RouteNotFoundException.ts';
 import { routes } from './routes/routes.ts';
 
-const router = new Router(routes);
 const server = Bun.serve({
   port: process.env.PORT || 8080,
   development: isDebug,
   reusePort: true,
-  fetch: async (request, server) => {
-    const url = new URL(request.url);
-    const [route, params] = router.match(url.pathname, request.method);
-    if (route?.handler) {
-      if (!await checkCanAccess(request, route, params)) {
-        throw new ForbiddenException();
-      }
-      if (route.schema) {
-        const body = await request.json();
-        const [error, validData] = validate(body, route.schema);
-        if (error) {
-          throw new DataInvalidException(error);
-        }
-        return route.handler(buildRouterContext({ request, server, params: params!, body: validData }));
-      }
-      return route.handler(buildRouterContext({ request, server, params: params! }));
-    }
-    throw new RouteNotFoundException();
-  },
+  routes: wrapRoutes(routes),
   error(error) {
     if (isDebug) {
       console.error(error);
